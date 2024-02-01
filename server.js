@@ -2,8 +2,29 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const axios = require("axios");
+const path = require("path");
 
-app.use(cors());
+const allowedOrigins = [
+  "https://megasails.netlify.app",
+  // Add any other origins that are allowed to access your server
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+
+app.use(express.static(path.join(__dirname, "client/build")));
 
 app.get("/documents", async (req, res) => {
   try {
