@@ -5,6 +5,25 @@ const axios = require("axios");
 const path = require("path");
 const mysql = require("mysql");
 
+const allowedOrigins = [
+  "http://18.223.93.100/",
+  // Add any other origins that are allowed to access your server
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -56,25 +75,7 @@ app.post("/submit-form", (req, res) => {
   });
 });
 
-const allowedOrigins = [
-  "http://18.223.93.100/",
-  // Add any other origins that are allowed to access your server
-];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
-
-app.use(cors(corsOptions));
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
