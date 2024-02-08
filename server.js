@@ -3,9 +3,61 @@ const cors = require("cors");
 const app = express();
 const axios = require("axios");
 const path = require("path");
+const mysql = require("mysql");
+
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "Mega@2023",
+  database: "megasails",
+});
+
+db.connect((err) => {
+  if (err) {
+    console.error("MySQL connection error:", err);
+  } else {
+    console.log("Connected to MySQL database");
+  }
+});
+
+app.post("/submit-form", (req, res) => {
+  const formData = req.body;
+
+  const sql = `
+    INSERT INTO leads (
+      NM_firstName, NM_lastName, ID_email, NO_phoneNumber,
+      CD_city, CD_state, CD_country, CA_category,
+      DS_comments1, DS_comments2, NM_docid
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  const values = [
+    formData.NM_firstName,
+    formData.NM_lastName,
+    formData.ID_email,
+    formData.NO_phoneNumber,
+    formData.CD_city,
+    formData.CD_state,
+    formData.CD_country,
+    formData.CA_category,
+    formData.DS_comments1,
+    formData.DS_comments2,
+    formData.NM_docid,
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("MySQL insertion error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      console.log("Data inserted into MySQL database");
+      res.json({ success: true });
+    }
+  });
+});
 
 const allowedOrigins = [
-  "https://megasails.netlify.app",
+  "http://18.223.93.100/",
   // Add any other origins that are allowed to access your server
 ];
 
