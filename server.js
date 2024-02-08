@@ -24,6 +24,7 @@ const corsOptions = {
 };
 
 app.use(cors());
+app.use(express.json());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -54,7 +55,7 @@ app.post("/submit-form", (req, res) => {
     formData.NM_firstName,
     formData.NM_lastName,
     formData.ID_email,
-    formData.NO_phoneNumber,
+    formData.NO_PhoneNumber,
     formData.CD_city,
     formData.CD_state,
     formData.CD_country,
