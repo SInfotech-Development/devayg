@@ -7,7 +7,12 @@ const mysql = require("mysql2");
 const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
 
-const allowedOrigins = ["http://18.223.93.100/", "http://localhost:3000"];
+const allowedOrigins = [
+  "http://18.223.93.100",
+  "http://localhost:3000",
+  "http://3.130.189.92",
+  "https://www.megasails.com/",
+];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -54,7 +59,7 @@ app.post("/send-email-yachtdetails", async (req, res) => {
     const mailOptions = {
       from: "broker@megasails.com",
       to: recipientEmail,
-      subject: subject,
+      subject: "MegaSails- Yacht Broker Services",
       text: `
 Dear ${NM_firstName} ${NM_lastName},
 
@@ -115,7 +120,7 @@ app.post("/send-email-contact", async (req, res) => {
     const mailOptions2 = {
       from: "broker@megasails.com",
       to: recipientEmail,
-      subject: subject,
+      subject: "MegaSails- Yacht Contact Inquiry",
       text: `
 Dear ${NM_firstName} ${NM_lastName},
 
