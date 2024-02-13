@@ -11,7 +11,8 @@ const allowedOrigins = [
   "http://18.223.93.100",
   "http://localhost:3000",
   "http://3.130.189.92",
-  "https://www.megasails.com/",
+  "http://3.143.153.138",
+  "https://www.megasails.com",
 ];
 
 const corsOptions = {
