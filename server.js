@@ -6,12 +6,22 @@ const path = require("path");
 const mysql = require("mysql2");
 const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
+const { createProxyMiddleware } = require("http-proxy-middleware");
+
+module.exports = function (app) {
+  app.use(
+    "/api",
+    createProxyMiddleware({
+      target: "0.0.0.0:5001",
+      changeOrigin: true,
+    })
+  );
+};
 
 const allowedOrigins = [
   "http://18.223.93.100",
   "http://localhost:3000",
   "http://3.130.189.92",
-  "http://3.143.153.138",
   "https://www.megasails.com",
 ];
 
@@ -220,6 +230,7 @@ MegaSails Team
 });
 
 app.use(cors());
+// corsOptions
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "client/build")));
@@ -369,5 +380,5 @@ app.get("/unique-makes", async (req, res) => {
   }
 });
 
-const port = 5001;
+const port = 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
