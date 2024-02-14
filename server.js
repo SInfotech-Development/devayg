@@ -12,7 +12,7 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "0.0.0.0:5001",
+      target: "0.0.0.0:5000",
       changeOrigin: true,
     })
   );
